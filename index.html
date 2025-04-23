@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedro Matos - Portfólio Escolar SESI SENAI</title>
+    <style>
+        /* --- CSS Reset & Estilos Base --- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #111; /* Fundo escuro como fallback */
+            color: #e0e0e0; /* Texto claro */
+            line-height: 1.6;
+            overflow-x: hidden; /* Previne rolagem horizontal */
+            cursor: none; /* Esconde o cursor padrão */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 0.75em;
+        }
+
+        h1 { font-size: 3.5rem; font-weight: 700; }
+        h2 { font-size: 2.5rem; font-weight: 600; }
+        h3 { font-size: 1.1rem; font-weight: 500; } /* Tamanho H3 ajustado para cards */
+
+        a {
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #ffffff;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* --- Classes Utilitárias --- */
+        .container {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+            position: relative;
+             /* --- Estado Inicial da Animação --- */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        /* --- Estado Final da Animação --- */
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-tag {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Garante transformação suave */
+            border: none;
+            cursor: none; /* Usa cursor personalizado */
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #f0f0f0;
+            color: #111;
+        }
+
+        .btn-primary:hover {
+            background-color: #fff;
+            color: #000;
+            transform: scale(1.03);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transform: scale(1.03);
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px; /* Espaçamento ligeiramente reduzido */
+        }
+
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+        .card {
+            background-color: rgba(34, 34, 34, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+             /* --- Estado Inicial da Animação --- */
+             opacity: 0;
+             transform: translateY(20px);
+             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        /* --- Estado Final da Animação --- */
+         .card.visible {
+             opacity: 1;
+             transform: translateY(0);
+         }
+         /* Adiciona atraso para efeito escalonado nos grids, se necessário */
+         .grid .card:nth-child(2).visible { transition-delay: 0.1s; }
+         .grid .card:nth-child(3).visible { transition-delay: 0.2s; }
+         .grid .card:nth-child(4).visible { transition-delay: 0.3s; }
+         .grid .card:nth-child(5).visible { transition-delay: 0.4s; }
+
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 20px; }
+        .mb-2 { margin-bottom: 20px; }
+
+        /* --- Cabeçalho / Navegação --- */
+        .main-header {
+            position: sticky;
+            top: 20px;
+            left: 0;
+            width: calc(100% - 40px);
+            margin: 20px auto 0;
+            z-index: 1000;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 8px 25px;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        .logo span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #005190; /* Azul SENAI */
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .main-nav a {
+            color: #c0c0c0;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+             cursor: none;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: #ffffff;
+        }
+
+        .header-cta .btn {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* --- Seção Hero --- */
+        #hero {
+            min-height: 70vh; display: flex; align-items: center; text-align: left;
+            padding-top: 120px; padding-bottom: 80px; position: relative; overflow: hidden;
+            opacity: 1; transform: none;
+        }
+        #hero-video {
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+            width: auto; height: auto; z-index: 0; transform: translate(-50%, -50%); object-fit: cover;
+        }
+        #hero::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); z-index: 1;
+        }
+        .hero-content {
+             max-width: 650px; position: relative; z-index: 3;
+             opacity: 0; transform: translateY(20px);
+             animation: fadeInSlideUp 0.8s 0.2s ease-out forwards;
+        }
+        @keyframes fadeInSlideUp { to { opacity: 1; transform: translateY(0); } }
+        #hero h1 { margin-bottom: 20px; }
+        #hero p { font-size: 1.1rem; color: #b0b0b0; margin-bottom: 30px; max-width: 550px; }
+        .hero-buttons { display: flex; gap: 15px; }
+
+        /* --- Testemunhos Flutuantes --- */
+        .floating-testimonials { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 3; pointer-events: none; }
+        .testimonial-float {
+            position: absolute; background-color: rgba(50, 50, 50, 0.7); padding: 25px 23px; border-radius: 10px;
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem; color: #ddd; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); opacity: 0;
+            animation: float 15s ease-in-out infinite alternate, fadeIn 1s 0.5s ease-out forwards;
+        }
+        .testimonial-float span { display: block; text-align: right; font-style: italic; font-size: 0.8rem; margin-top: 5px; color: #aaa; }
+        @keyframes fadeIn { to { opacity: 1;} }
+        .testimonial-float-1 { top: 20%; right: 15%; animation-delay: -2s, 0.6s; transform: rotate(-5deg); max-width: 300px;}
+        .testimonial-float-2 { top: 45%; left: 5%; animation-delay: 0s, 0.8s; transform: rotate(3deg); max-width: 280px;}
+        @keyframes float { 0% { transform: translate(0px, 0px) rotate(-5deg); } 50% { transform: translate(5px, -15px) rotate(0deg); } 100% { transform: translate(-5px, 0px) rotate(3deg); } }
+
+        /* --- Estilos das Estrelas Cadentes --- */
+        .shooting-stars-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
+        .star {
+            position: absolute; top: 50%; left: 50%; width: 2px; height: 100px;
+            background: linear-gradient(-45deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8)); border-radius: 50%; opacity: 0;
+            animation: shooting-star-animation 3s linear infinite;
+        }
+        @keyframes shooting-star-animation { 0% { opacity: 0; transform: translate(0, 0) rotate(-75deg); } 15%, 70% { opacity: 1; } 100% { opacity: 0; transform: translate(150vw, 150vh) rotate(45deg); } }
+        .star:nth-child(1) { top: 10%; left: -20%; animation-delay: 0s; animation-duration: 2.5s; }
+        .star:nth-child(2) { top: 40%; left: -30%; animation-delay: 1.2s; animation-duration: 3s; width: 1px; height: 60px; }
+        .star:nth-child(3) { top: -10%; left: 60%; animation-delay: 0.5s; animation-duration: 4s; }
+        .star:nth-child(4) { top: 60%; left: -15%; animation-delay: 2.8s; animation-duration: 2.8s; width: 3px; height: 120px; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1)); }
+        .star:nth-child(5) { top: -5%; left: 90%; animation-delay: 1.8s; animation-duration: 3.5s; }
+
+        /* --- Seção de Showcase das Disciplinas --- */
+        #disciplinas { /* Herda animação .section */ }
+        .disciplina-card {
+            background-color: #1a1a1a; border-radius: 10px; overflow: hidden; position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease-out, transform 0.5s ease-out;
+            display: flex; flex-direction: column;
+            opacity: 0; transform: translateY(20px);
+        }
+        .disciplina-card.visible { opacity: 1; transform: translateY(0); }
+        .grid .disciplina-card:nth-child(1).visible { transition-delay: 0.1s; }
+        .grid .disciplina-card:nth-child(2).visible { transition-delay: 0.2s; }
+        .grid .disciplina-card:nth-child(3).visible { transition-delay: 0.3s; }
+        .grid .disciplina-card:nth-child(4).visible { transition-delay: 0.4s; }
+        .grid .disciplina-card:nth-child(5).visible { transition-delay: 0.5s; }
+        .disciplina-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .disciplina-card img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+        .disciplina-card .card-content {
+            padding: 15px; margin-top: auto; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            position: absolute; bottom: 0; left: 0; width: 100%; transition: background 0.3s ease;
+        }
+        .disciplina-card h3 { margin-bottom: 0; font-size: 1rem; color: #eee; transition: color 0.3s ease; }
+        .disciplina-card .card-content p { display: none; }
+        .disciplina-icon {
+            position: absolute; bottom: 10px; right: 10px; background-color: rgba(255, 255, 255, 0.2); color: #fff;
+            width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; line-height: 1; opacity: 0; transform: scale(0.8);
+            transition: opacity 0.3s ease, background-color 0.3s ease, transform 0.3s ease; pointer-events: none;
+        }
+        .disciplina-card:hover .disciplina-icon { opacity: 1; transform: scale(1); }
+        .disciplina-card a.card-link:hover .disciplina-icon { background-color: rgba(255, 255, 255, 0.4); }
+        /* ****** IMPORTANTE: cursor: pointer aqui para garantir que o cursor padrão de link apareça em todos os cenários ****** */
+        .disciplina-card a.card-link { text-decoration: none; color: inherit; display: block; height: 100%; position: relative; cursor: pointer; }
+
+        /* --- Seção Sobre --- */
+        #sobre { /* Herda animação .section */ }
+        #sobre .grid { align-items: center; }
+        .about-image .card, .about-content { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .about-image .card.visible { opacity: 1; transform: translateY(0); transition-delay: 0.1s; }
+        .about-content.visible { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+        .about-image img { border-radius: 15px; width: 100%; max-width: 300px; margin: 0 auto; border: 3px solid rgba(255, 255, 255, 0.1); }
+        .about-image .card { background-color: #111; text-align: center; padding: 25px; } /* Adicionado padding de volta para esta instância específica de .card */
+        .about-content h2 { margin-bottom: 25px; }
+        .about-content p { margin-bottom: 15px; color: #c0c0c0; }
+
+        /* --- Rodapé --- */
+        .main-footer { background-color: #1a1a1a; padding: 40px 0 20px; margin-top: 80px; border-top: 1px solid rgba(255, 255, 255, 0.1); opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .main-footer.visible { opacity: 1; transform: translateY(0); }
+        .footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
+        .footer-logo .logo { font-size: 1.5rem; }
+        .social-links a { margin-left: 15px; font-size: 1.3rem; color: #aaa; transition: color 0.3s ease; cursor: none; }
+        .social-links a:hover { color: #fff; }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; font-size: 0.85rem; color: #888; flex-wrap: wrap; gap: 10px; }
+        .footer-links ul { list-style: none; display: flex; gap: 20px; }
+        .footer-links a { color: #aaa; font-size: 0.9rem; transition: color 0.3s ease; cursor: none; }
+        .footer-links a:hover { color: #fff; }
+        .footer-contact { color: #aaa; font-size: 0.9rem; }
+
+        /* --- Estilos do Cursor Personalizado --- */
+        #custom-cursor-outer, #custom-cursor-inner { position: fixed; top: 0; left: 0; border-radius: 50%; pointer-events: none; z-index: 9999; opacity: 0; transform: translate(-50%, -50%); }
+        #custom-cursor-outer { width: 35px; height: 35px; border: 2px solid rgba(200, 200, 200, 0.7); transition: top 0.1s ease-out, left 0.1s ease-out, width 0.2s ease-out, height 0.2s ease-out, opacity 0.3s ease-out, border-color 0.2s ease; }
+        #custom-cursor-inner { width: 8px; height: 8px; background-color: rgba(220, 220, 220, 0.9); transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.3s ease-out, background-color 0.2s ease; }
+        body.cursor-hover #custom-cursor-outer { width: 50px; height: 50px; border-color: rgba(255, 255, 255, 1); }
+        body.cursor-hover #custom-cursor-inner { width: 6px; height: 6px; opacity: 0.8; }
+
+        /* --- Media Queries --- */
+        @media (max-width: 992px) {
+            h1 { font-size: 3rem; } h2 { font-size: 2rem; }
+            #disciplinas .grid-cols-3, #disciplinas .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .main-header { width: calc(100% - 30px); top: 15px; } .header-content { padding: 6px 20px; } .main-nav ul { gap: 20px; }
+            .testimonial-float-1 { right: 5%; } .testimonial-float-2 { left: 5%; }
+        }
+        @media (max-width: 768px) {
+            .section { padding: 60px 0; } h1 { font-size: 2.5rem; }
+            .grid-cols-2 { grid-template-columns: 1fr; } #sobre .grid { grid-template-columns: 1fr; }
+            .about-image { margin-bottom: 30px; }
+            .header-content { flex-direction: column; gap: 10px; padding: 15px; border-radius: 20px; } .main-nav ul { justify-content: center; } .header-cta { margin-top: 10px; }
+            .hero-content { text-align: center; max-width: 90%; } .hero-buttons { justify-content: center; } #hero p { margin: auto; max-width: 90%; }
+            .footer-top, .footer-bottom { flex-direction: column; text-align: center; gap: 15px; } .social-links { margin-top: 10px; } .footer-links { margin-top: 10px; order: 1; } .footer-contact { order: 2; } .copyright { order: 3; }
+            .testimonial-float-2 { display: none; } .testimonial-float-1 { top: 15%; right: 5%; max-width: 250px;}
+            #disciplinas .grid-cols-3, #disciplinas .grid-cols-2 { grid-template-columns: 1fr; }
+            body { cursor: auto; } #custom-cursor-outer, #custom-cursor-inner { display: none; }
+            a, button, .btn, .disciplina-card a { cursor: pointer; } /* Garante cursor pointer no mobile */
+            #hero-video { display: none; } .shooting-stars-container { display: none; }
+            #hero { background: radial-gradient(circle, rgba(40,40,40,1) 0%, rgba(17,17,17,1) 70%); }
+            #hero::after { display: none; }
+        }
+         @media (max-width: 576px) {
+             h1 { font-size: 2.2rem; } h2 { font-size: 1.8rem; }
+             .btn { padding: 10px 20px; font-size: 0.9rem;} .main-nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; } .main-nav a { font-size: 0.9rem; }
+             .floating-testimonials { display: none; }
+             .section, .card, .disciplina-card, .about-image .card, .about-content, .main-footer { opacity: 1; transform: none; transition: opacity 0.5s ease-out; }
+             .section.visible, .card.visible, .disciplina-card.visible, .about-image .card.visible, .about-content.visible, .main-footer.visible { opacity: 1; transform: none; }
+             .hero-content { animation: fadeIn 0.6s ease-out forwards; }
+         }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="index.html" class="logo"><span></span>Portfólio</a> <!-- Link do logo para index.html -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#disciplinas">Disciplinas</a></li>
+                    <li><a href="#sobre">Sobre Mim</a></li>
+                </ul>
+            </nav>
+            <div class="header-cta">
+                <a href="#footer" class="btn btn-primary">Contato</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção Hero -->
+        <section id="hero">
+            <video autoplay loop muted playsinline id="hero-video">
+                <!-- !!! SUBSTITUA PELO CAMINHO DO SEU VÍDEO !!! -->
+                <source src="video.mp4" type="video/mp4">
+                Seu navegador não suporta vídeos HTML5.
+            </video>
+            <div class="shooting-stars-container">
+                <div class="star"></div> <div class="star"></div> <div class="star"></div> <div class="star"></div> <div class="star"></div>
+            </div>
+            <div class="floating-testimonials">
+                <div class="testimonial-float testimonial-float-1">"Uma vida sem desafios não vale a pena ser vivida" <span>-Socrates</span></div>
+                <div class="testimonial-float testimonial-float-2">"Você se torna aquilo que você pensa." <span>-Napoleon Hill</span></div>
+            </div>
+            <div class="container hero-content">
+                <span class="section-tag">◎ Aluno SESI SENAI</span>
+                <h1>Pedro Matos - Portfólio Escolar</h1>
+                <p>Bem-vindo ao meu portfólio escolar. Aqui apresento alguns dos trabalhos e aprendizados desenvolvidos durante meu percurso no SESI SENAI, com foco na minha formação e objetivos futuros.</p>
+                <div class="hero-buttons">
+                    <a href="#disciplinas" class="btn btn-secondary">Ver Disciplinas</a>
+                    <a href="#sobre" class="btn btn-primary">Sobre Mim</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Showcase das Disciplinas - COM LINKS CORRIGIDOS -->
+        <section id="disciplinas" class="section">
+            <div class="container">
+                 <div class="text-center mb-2">
+                     <span class="section-tag">◎ Áreas de Conhecimento</span>
+                     <h2>Disciplinas</h2>
+                     <p>Explore os projetos desenvolvidos em cada área de conhecimento.</p>
+                 </div>
+                 <div class="grid grid-cols-2"> <!-- Confirme se grid-cols-2 é o desejado -->
+
+                    <!-- Disciplina 1: Matemática -->
+                    <div class="disciplina-card">
+                        <a href="matematica.html" class="card-link"> <!-- Link Corrigido -->
+                            <img src="img/matematica.jpg" alt="Disciplina 1 - Matemática">
+                            <div class="card-content"> <h3>Matemática</h3> </div>
+                            <span class="disciplina-icon">↗</span>
+                        </a>
+                    </div>
+
+                    <!-- Disciplina 2: Linguagens -->
+                    <div class="disciplina-card">
+                        <a href="linguas.html" class="card-link"> <!-- Link Corrigido (confirme nome do arquivo) -->
+                            <img src="img/linguagens.jpg" alt="Disciplina 2 - Linguagens">
+                             <div class="card-content"> <h3>Linguagens</h3> </div>
+                            <span class="disciplina-icon">↗</span>
+                        </a>
+                    </div>
+
+                    <!-- Disciplina 3: Ciências da Natureza -->
+                     <div class="disciplina-card">
+                        <a href="ciencias.html" class="card-link"> <!-- Link Corrigido (confirme nome do arquivo) -->
+                            <img src="img/natureza.jpg" alt="Disciplina 3 - Ciências da Natureza">
+                             <div class="card-content"> <h3>Ciências da Natureza</h3> </div>
+                            <span class="disciplina-icon">↗</span>
+                        </a>
+                    </div>
+
+                    <!-- Disciplina 4: Ciências Humanas -->
+                     <div class="disciplina-card">
+                        <a href="humanas.html" class="card-link"> <!-- Link Corrigido -->
+                            <img src="img/humanas.jpg" alt="Disciplina 4 - Ciências Humanas">
+                             <div class="card-content"> <h3>Ciências Humanas</h3> </div>
+                            <span class="disciplina-icon">↗</span>
+                        </a>
+                    </div>
+
+                     <!-- Disciplina 5: Área Técnica -->
+                     <div class="disciplina-card">
+                        <a href="tecnic.html" class="card-link"> <!-- Link Corrigido (confirme nome do arquivo) -->
+                            <img src="img/programacao.jpg" alt="Disciplina 5 - Área Técnica">
+                             <div class="card-content"> <h3>Área Técnica</h3> </div>
+                             <span class="disciplina-icon">↗</span>
+                        </a>
+                    </div>
+
+                 </div>
+            </div>
+        </section>
+
+        <!-- Seção Sobre -->
+        <section id="sobre" class="section">
+            <div class="container grid grid-cols-2">
+                <div class="about-image">
+                    <!-- Removido .card daqui para usar padding original -->
+                    <div class="card">
+                         <img src="img/matos.jpg" alt="Pedro Matos">
+                         <h3 class="mt-2">Pedro Matos</h3>
+                         <p>Estudante SESI SENAI</p>
+                         <p><small>🟢 Focado nos estudos e futuro</small></p>
+                         <a href="#footer" class="btn btn-secondary mt-2">Entrar em Contato</a>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <span class="section-tag">◎ Quem Sou Eu</span>
+                    <h2>Sobre Mim</h2>
+                    <p>Meu nome é Pedro Matos. Tenho 17 anos, quero me formar em economia, criar minha empresa e ser um empreendedor de sucesso.</p>
+                    <p>Sempre fui muito determinado e focado nos meus objetivos. Acredito que o planejamento é a chave para conquistar meus objetivos, e estou me dedicando ao máximo para ter sucesso nos estudos.</p>
+                    <p>Além disso, busco aprender sempre mais sobre gestão, liderança e como melhorar minha capacidade de tomar decisões. Meu objetivo é trabalhar em um cargo de responsabilidade, onde eu possa não apenas crescer profissionalmente, mas também evoluir financeiramente e criar meu próprio caminho</p>
+                    <p>Sei que o caminho não será fácil, mas estou preparado para os desafios e vou dar o meu melhor para alcançar o sucesso.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer id="footer" class="main-footer">
+        <div class="container">
+            <div class="footer-top">
+                 <a href="index.html" class="footer-logo logo"><span></span>Portfólio</a> <!-- Link do logo para index.html -->
+                 <div class="social-links"> <!-- Adicione links sociais aqui --> </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-links">
+                     <ul>
+                        <li><a href="#disciplinas">Disciplinas</a></li>
+                        <li><a href="#sobre">Sobre Mim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">Contato: pedro.matos.exemplo@email.com</div> <!-- Adapte -->
+                 <div class="copyright">© 2025 Pedro Matos - SESI SENAI</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Elementos do Cursor Personalizado -->
+    <div id="custom-cursor-outer"></div>
+    <div id="custom-cursor-inner"></div>
+
+    <!-- Script (Essencial) -->
+    <script>
+        // Intersection Observer
+        const observerOptions={root:null,rootMargin:'0px',threshold:0.1};const observerCallback=(e,o)=>{e.forEach(e=>{e.isIntersecting&&(e.target.classList.add('visible'),o.unobserve(e.target))})};const observer=new IntersectionObserver(observerCallback,observerOptions);const elementsToAnimate=document.querySelectorAll('.section:not(#hero), .disciplina-card, .about-image .card, .about-content, .main-footer');elementsToAnimate.forEach(e=>observer.observe(e));
+        // Cursor Personalizado
+        const cursorOuter=document.getElementById('custom-cursor-outer');const cursorInner=document.getElementById('custom-cursor-inner');let isCursorVisible=!1;const isTouchDevice='ontouchstart'in window||navigator.maxTouchPoints>0;if(!isTouchDevice){const e=e=>{const t=e.clientX,o=e.clientY;isCursorVisible||(cursorOuter.style.opacity='1',cursorInner.style.opacity='1',isCursorVisible=!0),cursorInner.style.top=`${o}px`,cursorInner.style.left=`${t}px`,cursorOuter.style.top=`${o}px`,cursorOuter.style.left=`${t}px`},t=()=>{document.body.classList.add('cursor-hover')},o=()=>{document.body.classList.remove('cursor-hover')};window.addEventListener('mousemove',e);const s=document.querySelectorAll('a, button, .btn, .disciplina-card a'); /* Incluído .disciplina-card a para garantir hover do cursor */ s.forEach(e=>{e.addEventListener('mouseenter',t),e.addEventListener('mouseleave',o)})}else{document.body.style.cursor='auto';const e=document.querySelectorAll('a, button, .btn, .disciplina-card a');e.forEach(e=>{e.style.cursor='pointer'})};
+    </script>
+
+</body>
+</html>
